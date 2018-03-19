@@ -1,0 +1,44 @@
+{
+  "extends": "airbnb",
+  "plugins": ["react", "react-native"],
+  "parser": "babel-eslint",
+  "globals": {
+    "navigator": true,
+    "FormData": true
+  },
+  "rules": {
+    "consistent-return": 0,
+    "jsx-a11y/href-no-hash": 0,
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "react/prefer-stateless-function": 0,
+    "react/jsx-filename-extension": 0,
+    "react/prop-types": 0,
+    "no-use-before-define": 0,
+    "no-underscore-dangle": 0,
+    "no-unused-expressions": ["error", { "allowShortCircuit": true }],
+    "global-require": 0,
+    "class-methods-use-this": 0,
+    "max-len": [
+      "error",
+      130,
+      2,
+      {
+        "ignoreUrls": true,
+        "ignoreComments": true,
+        "ignoreRegExpLiterals": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
+      }
+    ],
+    "react/forbid-prop-types": 0,
+    "react/no-array-index-key": 1,
+    "react-native/no-unused-styles": 2,
+    "react-native/split-platform-components": 2,
+    "react-native/no-inline-styles": 1,
+    "import/prefer-default-export": 0,
+    "react-native/no-color-literals": 2,
+    "react/jsx-indent": ["error", 2],
+    "react/jsx-indent-props": ["error", 2],
+    "react/no-unescaped-entities": 0
+  }
+}
