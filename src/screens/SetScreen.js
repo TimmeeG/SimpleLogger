@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text, TextInput, Button, FlatList } from 'react-native';
-import { createNewSet } from './../actions';
+import { createNewSet, changeCurrentDataSet, deleteSet } from './../actions';
+import DataSetItem from './../components/DataSetItem';
 
 class SetScreen extends Component {
   state = {
     text: '',
   };
 
+  setCurrentDataSet(setName) {
+    this.props.changeCurrentDataSet(setName);
+  }
+
   startNewDataSet() {
     this.props.createNewSet(this.state.text);
     this.setState({ text: '' });
+  }
+
+  deleteDataSet(setName) {
+    this.props.deleteSet(setName);
   }
 
   render() {
@@ -21,7 +30,14 @@ class SetScreen extends Component {
           <FlatList
             data={this.props.set.set}
             keyExtractor={(item, index) => `list-item-${index}`}
-            renderItem={({ item }) => <Text>{item.name}</Text>}
+            renderItem={({ item }) => (
+              <DataSetItem
+                title={item.name}
+                navigator={this.props.navigation}
+                switchToDataSet={() => this.setCurrentDataSet(item.name)}
+                deleteItem={() => this.deleteDataSet(item.name)}
+              />
+            )}
           />
         ) : (
           <Text>No data sets yet!</Text>
@@ -45,4 +61,6 @@ const mapStateToProps = ({ set }) => ({
 
 export default connect(mapStateToProps, {
   createNewSet,
+  changeCurrentDataSet,
+  deleteSet,
 })(SetScreen);

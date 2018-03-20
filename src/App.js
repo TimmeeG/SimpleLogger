@@ -11,15 +11,22 @@ import ChartScreen from './screens/ChartScreen';
 
 export default class App extends Component {
   render() {
-    const MainNavigator = TabNavigator({
-      sets: { screen: SetScreen },
-      main: {
-        screen: TabNavigator({
-          data: { screen: DataScreen },
-          chart: { screen: ChartScreen },
-        }),
+    const MainNavigator = TabNavigator(
+      {
+        sets: { screen: SetScreen },
+        main: {
+          screen: TabNavigator({
+            data: { screen: DataScreen },
+            chart: { screen: ChartScreen },
+          }),
+        },
       },
-    });
+      {
+        navigationOptions: {
+          tabBarVisible: false,
+        },
+      },
+    );
 
     return (
       <Provider store={store}>
