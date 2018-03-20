@@ -5,14 +5,14 @@ import { TabNavigator } from 'react-navigation';
 
 import store from './store';
 
-import ItemsScreen from './screens/ItemsScreen';
+import SetScreen from './screens/SetScreen';
 import DataScreen from './screens/DataScreen';
 import ChartScreen from './screens/ChartScreen';
 
 export default class App extends Component {
   render() {
     const MainNavigator = TabNavigator({
-      items: { screen: ItemsScreen },
+      sets: { screen: SetScreen },
       main: {
         screen: TabNavigator({
           data: { screen: DataScreen },
