@@ -2,14 +2,36 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RNFetchBlob from 'react-native-fetch-blob';
 import moment from 'moment';
-import { View, Text, TextInput, Button, FlatList, Alert } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  FlatList,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import Header from '../components/Header';
 import { logDataPoint } from './../actions';
+import { colors } from '../constants/colors';
 
 class DataScreen extends Component {
   state = {
     text: '',
+    data: [],
   };
+
+  componentWillMount() {
+    this.state.data = this.props.data.data.filter(
+      dataPoint => dataPoint.set === this.props.set.currentSet,
+    );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.state.data = nextProps.data.data.filter(
+      dataPoint => dataPoint.set === this.props.set.currentSet,
+    );
+  }
 
   addDataPoint() {
     this.props.logDataPoint({
@@ -17,11 +39,12 @@ class DataScreen extends Component {
       dataPoint: this.state.text,
       timeStamp: new moment(),
     });
+    this.setState({ text: '' });
   }
 
   exportData() {
     const headerString = 'timestamp,data\n';
-    const rowString = this.props.data.data
+    const rowString = this.state.data
       .map(d => `${(d.timeStamp, d.dataPoint)}\n`)
       .join('');
     const csvString = `${headerString}${rowString}`;
@@ -41,38 +64,80 @@ class DataScreen extends Component {
   }
 
   render() {
+    const { text, data } = this.state;
+
     return (
-      <View>
-        <Header title="Data" />
-        {this.props.data.data ? (
-          <FlatList
-            data={this.props.data.data.filter(
-              dataPoint => dataPoint.set === this.props.set.currentSet,
-            )}
-            keyExtractor={(item, index) => `list-item-${index}`}
-            renderItem={({ item }) => <Text>{item.dataPoint}</Text>}
+      <View style={styles.viewStyle}>
+        {/* <Button title="Download CSV" onPress={() => this.exportData()} /> */}
+        <Header
+          title={this.props.set.currentSet}
+          onLeft={() => this.props.navigation.navigate('sets')}
+          onRight={() => this.exportData()}
+        />
+        <View style={styles.viewStyle}>
+          {data ? (
+            <FlatList
+              data={data}
+              keyExtractor={(item, index) => `list-item-${index}`}
+              renderItem={({ item }) => (
+                <Text>
+                  {moment(item.timeStamp).format('M/DD/YY')} - {item.dataPoint}
+                </Text>
+              )}
+            />
+          ) : (
+            <Text>No data points logged yet!</Text>
+          )}
+        </View>
+        <View style={styles.bottomViewStyle}>
+          <TextInput
+            style={styles.textInputStyle}
+            keyboardType="numeric"
+            placeholder="Enter value here"
+            onChangeText={input => this.setState({ text: input })}
+            value={text}
           />
-        ) : (
-          <Text>No data points logged yet!</Text>
-        )}
-        <TextInput
-          keyboardType="numeric"
-          onChangeText={text => this.setState({ text })}
-          value={this.state.text}
-        />
-        <Button
-          title="Log New Data Point"
-          onPress={() => this.addDataPoint()}
-        />
-        <Button
-          title="Back"
-          onPress={() => this.props.navigation.navigate('sets')}
-        />
-        <Button title="Download CSV" onPress={() => this.exportData()} />
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={() => this.addDataPoint()}
+            disabled={!text}
+          >
+            <Text>Log New Data Point</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  viewStyle: {
+    flex: 1,
+  },
+  buttonStyle: {
+    height: 30,
+    backgroundColor: colors.buttonBackground,
+    borderRadius: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottomViewStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  textInputStyle: {
+    width: '50%',
+    paddingLeft: 5,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: colors.inputBorder,
+    height: 30,
+  },
+});
 
 const mapStateToProps = ({ data, set }) => ({
   data,

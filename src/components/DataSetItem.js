@@ -14,10 +14,6 @@ class DataSetItem extends Component {
     showButtons: false,
   };
 
-  onSetNamePress() {
-    this.setState({ showButtons: !this.state.showButtons });
-  }
-
   onAddDataPoint() {
     this.props.switchToDataSet(this.props.title);
     this.props.navigator.navigate('data');
@@ -30,7 +26,7 @@ class DataSetItem extends Component {
       [
         {
           text: 'Cancel',
-          style: 'cancel',
+          style: 'default',
         },
         {
           text: 'Delete',
@@ -38,6 +34,7 @@ class DataSetItem extends Component {
             this.setState({ showButtons: false });
             this.props.deleteItem(this.props.title);
           },
+          style: 'destructive',
         },
       ],
       { cancelable: false },
@@ -49,7 +46,9 @@ class DataSetItem extends Component {
       <View>
         <Button
           title={this.props.title}
-          onPress={() => this.onSetNamePress()}
+          onPress={() =>
+            this.setState({ showButtons: !this.state.showButtons })
+          }
         />
         {this.state.showButtons && (
           <View style={styles.buttonsViewStyle}>

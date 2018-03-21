@@ -72,7 +72,7 @@ class ChartScreen extends Component {
 
     return (
       <View style={styles.outerViewStyle}>
-        <Header title={this.props.set.currentSet} />
+        <Header hideLeft hideRight title={this.props.set.currentSet} />
         <View style={styles.innerViewStyle}>
           <StockLine data={[data]} options={options} xKey="x" yKey="y" />
           <Text>Time</Text>

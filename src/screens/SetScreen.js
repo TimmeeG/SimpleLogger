@@ -32,10 +32,12 @@ class SetScreen extends Component {
   }
 
   render() {
+    const { text } = this.state;
+
     return (
-      <View style={styles.viewStyle}>
-        <Header title="Your Datasets" />
-        <View style={styles.viewStyle}>
+      <View style={styles.outerViewStyle}>
+        <Header hideLeft hideRight title="Your Datasets" />
+        <View style={styles.innerViewStyle}>
           {this.props.set.set.length > 0 ? (
             <FlatList
               data={this.props.set.set}
@@ -50,18 +52,27 @@ class SetScreen extends Component {
               )}
             />
           ) : (
-            <Text>No data sets yet!</Text>
+            <View>
+              <Text style={styles.textStyle}>
+                No data sets yet.
+                {'\n'}
+                {'\n'}
+              </Text>
+              <Text style={styles.textStyle}>Create a data set below!</Text>
+            </View>
           )}
         </View>
         <View style={styles.bottomViewStyle}>
           <TextInput
             style={styles.textInputStyle}
-            onChangeText={text => this.setState({ text })}
-            value={this.state.text}
+            placeholder="Name your dataset"
+            onChangeText={input => this.setState({ text: input })}
+            value={text}
           />
           <TouchableOpacity
             style={styles.buttonStyle}
             onPress={() => this.startNewDataSet()}
+            disabled={!text}
           >
             <Text>Start New Data Set</Text>
           </TouchableOpacity>
@@ -72,8 +83,16 @@ class SetScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  viewStyle: {
+  outerViewStyle: {
     flex: 1,
+  },
+  innerViewStyle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textStyle: {
+    textAlign: 'center',
   },
   buttonStyle: {
     height: 30,
