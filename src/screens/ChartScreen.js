@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { StockLine } from 'react-native-pathjs-charts';
@@ -70,14 +70,32 @@ class ChartScreen extends Component {
     };
 
     return (
-      <View>
+      <View style={styles.viewStyle}>
         <Text>{this.props.set.currentSet}</Text>
         <StockLine data={[data]} options={options} xKey="x" yKey="y" />
         <Text>Time</Text>
+        <Text style={styles.textStyle}>
+          This is just a sample graph of your data. Download the csv file to
+          have more control over how your data is represented.
+        </Text>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  viewStyle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textStyle: {
+    textAlign: 'center',
+    marginTop: 30,
+    marginLeft: 15,
+    marginRight: 15,
+  },
+});
 
 const mapStateToProps = ({ data, set }) => ({
   data,
