@@ -12,7 +12,7 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case LOG_DATA_POINT: {
-      const { set, datum, time } = action.payload;
+      const { set, dataPoint, timeStamp } = action.payload;
 
       return {
         ...state,
@@ -20,8 +20,8 @@ export default function(state = initialState, action) {
           ...state.data,
           {
             set,
-            time,
-            datum,
+            timeStamp,
+            dataPoint,
           },
         ],
       };

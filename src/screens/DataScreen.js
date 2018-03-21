@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import RNFetchBlob from 'react-native-fetch-blob';
+import moment from 'moment';
 import { View, Text, TextInput, Button, FlatList, Alert } from 'react-native';
 import { logDataPoint } from './../actions';
 
@@ -12,15 +13,15 @@ class DataScreen extends Component {
   addDataPoint() {
     this.props.logDataPoint({
       set: this.props.set.currentSet,
-      datum: this.state.text,
-      time: new Date(),
+      dataPoint: this.state.text,
+      timeStamp: new moment(),
     });
   }
 
   exportData() {
     const headerString = 'timestamp,data\n';
     const rowString = this.props.data.data
-      .map(d => `${(d.timeStamp, d.datum)}\n`)
+      .map(d => `${(d.timeStamp, d.dataPoint)}\n`)
       .join('');
     const csvString = `${headerString}${rowString}`;
     const pathToWrite = `${RNFetchBlob.fs.dirs.DocumentDir}/${
@@ -45,10 +46,10 @@ class DataScreen extends Component {
         {this.props.data.data ? (
           <FlatList
             data={this.props.data.data.filter(
-              datum => datum.set === this.props.set.currentSet,
+              dataPoint => dataPoint.set === this.props.set.currentSet,
             )}
             keyExtractor={(item, index) => `list-item-${index}`}
-            renderItem={({ item }) => <Text>{item.datum}</Text>}
+            renderItem={({ item }) => <Text>{item.dataPoint}</Text>}
           />
         ) : (
           <Text>No data points logged yet!</Text>
