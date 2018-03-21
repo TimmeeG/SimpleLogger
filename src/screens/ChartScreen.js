@@ -3,6 +3,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { StockLine } from 'react-native-pathjs-charts';
+import Header from './../components/Header';
 
 class ChartScreen extends Component {
   formatData() {
@@ -16,7 +17,7 @@ class ChartScreen extends Component {
 
     return rawData.map(d => ({
       x: Math.round(100 * (moment(d.timeStamp).diff(firstTime) / timeRange)),
-      y: parseInt(d.dataPoint, 10),
+      y: parseFloat(d.dataPoint, 10),
     }));
   }
 
@@ -70,21 +71,26 @@ class ChartScreen extends Component {
     };
 
     return (
-      <View style={styles.viewStyle}>
-        <Text>{this.props.set.currentSet}</Text>
-        <StockLine data={[data]} options={options} xKey="x" yKey="y" />
-        <Text>Time</Text>
-        <Text style={styles.textStyle}>
-          This is just a sample graph of your data. Download the csv file to
-          have more control over how your data is represented.
-        </Text>
+      <View style={styles.outerViewStyle}>
+        <Header title={this.props.set.currentSet} />
+        <View style={styles.innerViewStyle}>
+          <StockLine data={[data]} options={options} xKey="x" yKey="y" />
+          <Text>Time</Text>
+          <Text style={styles.textStyle}>
+            This is just a sample graph of your data. Download the csv file to
+            have more control over how your data is represented.
+          </Text>
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  viewStyle: {
+  outerViewStyle: {
+    flex: 1,
+  },
+  innerViewStyle: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

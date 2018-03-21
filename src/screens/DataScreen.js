@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import RNFetchBlob from 'react-native-fetch-blob';
 import moment from 'moment';
 import { View, Text, TextInput, Button, FlatList, Alert } from 'react-native';
+import Header from '../components/Header';
 import { logDataPoint } from './../actions';
 
 class DataScreen extends Component {
@@ -42,7 +43,7 @@ class DataScreen extends Component {
   render() {
     return (
       <View>
-        <Text>Log Data</Text>
+        <Header title="Data" />
         {this.props.data.data ? (
           <FlatList
             data={this.props.data.data.filter(
