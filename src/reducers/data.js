@@ -2,6 +2,7 @@ import {
   LOG_DATA_POINT,
   DELETE_DATA_POINT,
   EDIT_DATA_POINT,
+  DELETE_SET,
 } from './../actions';
 
 const initialState = {
@@ -26,17 +27,21 @@ export default function(state = initialState, action) {
         ],
       };
     }
-
-    case DELETE_DATA_POINT:
+    case DELETE_SET:
       return {
         ...state,
-        set: state.set.filter(data => data.name !== action.payload),
+        data: state.data.filter(data => data.set !== action.payload),
       };
-    case EDIT_DATA_POINT:
-      return {
-        ...state,
-        currentSet: action.payload,
-      };
+    // case DELETE_DATA_POINT:
+    //   return {
+    //     ...state,
+    //     set: state.set.filter(data => data.name !== action.payload),
+    //   };
+    // case EDIT_DATA_POINT:
+    //   return {
+    //     ...state,
+    //     currentSet: action.payload,
+    //   };
     default:
       return state;
   }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { TabNavigator } from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import store from './store';
 
@@ -16,8 +17,18 @@ export default class App extends Component {
         sets: { screen: SetScreen },
         main: {
           screen: TabNavigator({
-            data: { screen: DataScreen },
-            chart: { screen: ChartScreen },
+            data: {
+              screen: DataScreen,
+              navigationOptions: {
+                tabBarIcon: <Icon name="list-ol" size={30} />,
+              },
+            },
+            chart: {
+              screen: ChartScreen,
+              navigationOptions: {
+                tabBarIcon: <Icon name="line-chart" size={30} />,
+              },
+            },
           }),
         },
       },

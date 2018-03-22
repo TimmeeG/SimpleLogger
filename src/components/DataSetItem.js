@@ -73,6 +73,8 @@ class DataSetItem extends Component {
 
 const styles = StyleSheet.create({
   buttonsViewStyle: {
+    flex: 1,
+    width: 300,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',

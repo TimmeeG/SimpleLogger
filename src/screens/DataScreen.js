@@ -68,7 +68,6 @@ class DataScreen extends Component {
 
     return (
       <View style={styles.viewStyle}>
-        {/* <Button title="Download CSV" onPress={() => this.exportData()} /> */}
         <Header
           title={this.props.set.currentSet}
           onLeft={() => this.props.navigation.navigate('sets')}
