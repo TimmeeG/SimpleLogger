@@ -9,6 +9,7 @@ import store from './store';
 import SetScreen from './screens/SetScreen';
 import DataScreen from './screens/DataScreen';
 import ChartScreen from './screens/ChartScreen';
+import { colors } from './constants/colors';
 
 export default class App extends Component {
   render() {
@@ -16,20 +17,34 @@ export default class App extends Component {
       {
         sets: { screen: SetScreen },
         main: {
-          screen: TabNavigator({
-            data: {
-              screen: DataScreen,
-              navigationOptions: {
-                tabBarIcon: <Icon name="list-ol" size={30} />,
+          screen: TabNavigator(
+            {
+              data: {
+                screen: DataScreen,
+                navigationOptions: {
+                  tabBarIcon: ({ tintColor }) => (
+                    <Icon name="list-ol" size={30} color={tintColor} />
+                  ),
+                },
+              },
+              chart: {
+                screen: ChartScreen,
+                navigationOptions: {
+                  tabBarIcon: ({ tintColor }) => (
+                    <Icon name="line-chart" size={30} color={tintColor} />
+                  ),
+                },
               },
             },
-            chart: {
-              screen: ChartScreen,
-              navigationOptions: {
-                tabBarIcon: <Icon name="line-chart" size={30} />,
+            {
+              tabBarOptions: {
+                activeTintColor: colors.buttonBackground,
+                inactiveTintColor: colors.headerBackground,
               },
+              animationEnabled: true,
+              swipeEnabled: true,
             },
-          }),
+          ),
         },
       },
       {
