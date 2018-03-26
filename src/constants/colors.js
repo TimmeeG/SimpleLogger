@@ -3,5 +3,8 @@ export const colors = {
   headerBottomBorder: 'black',
   buttonBackground: 'blue',
   delete: 'red',
+  errorText: 'red',
   inputBorder: 'gray',
+  editIcon: 'green',
+  deleteIcon: 'red',
 };

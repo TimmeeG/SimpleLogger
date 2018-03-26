@@ -30,18 +30,27 @@ export default function(state = initialState, action) {
     case DELETE_SET:
       return {
         ...state,
-        data: state.data.filter(data => data.set !== action.payload),
+        data: state.data.filter(point => point.set !== action.payload),
       };
-    // case DELETE_DATA_POINT:
-    //   return {
-    //     ...state,
-    //     set: state.set.filter(data => data.name !== action.payload),
-    //   };
-    // case EDIT_DATA_POINT:
-    //   return {
-    //     ...state,
-    //     currentSet: action.payload,
-    //   };
+    case DELETE_DATA_POINT:
+      return {
+        ...state,
+        data: state.data.filter(point => point.timeStamp !== action.payload),
+      };
+    case EDIT_DATA_POINT: {
+      const oldItemIndex = state.data.findIndex(
+        point => point.timeStamp === action.payload.timeStamp,
+      );
+
+      return {
+        ...state,
+        data: [
+          ...state.data.slice(0, oldItemIndex),
+          action.payload,
+          ...state.data.slice(oldItemIndex + 1),
+        ],
+      };
+    }
     default:
       return state;
   }

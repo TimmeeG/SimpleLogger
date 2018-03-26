@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { colors } from './../constants/colors';
 
-class DataSetItem extends Component {
+class SetItem extends Component {
   state = {
     showButtons: false,
   };
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DataSetItem;
+export default SetItem;

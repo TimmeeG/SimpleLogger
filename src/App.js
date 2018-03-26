@@ -22,6 +22,7 @@ export default class App extends Component {
               data: {
                 screen: DataScreen,
                 navigationOptions: {
+                  tabBarLabel: 'Data',
                   tabBarIcon: ({ tintColor }) => (
                     <Icon name="list-ol" size={30} color={tintColor} />
                   ),
@@ -30,6 +31,7 @@ export default class App extends Component {
               chart: {
                 screen: ChartScreen,
                 navigationOptions: {
+                  tabBarLabel: 'Chart',
                   tabBarIcon: ({ tintColor }) => (
                     <Icon name="line-chart" size={30} color={tintColor} />
                   ),

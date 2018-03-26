@@ -7,15 +7,18 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  KeyboardAvoidingView,
+  Keyboard,
 } from 'react-native';
 import { createNewSet, changeCurrentDataSet, deleteSet } from './../actions';
-import DataSetItem from './../components/DataSetItem';
+import SetItem from './../components/SetItem';
 import Header from './../components/Header';
 import { colors } from '../constants/colors';
 
 class SetScreen extends Component {
   state = {
     text: '',
+    errorText: '',
   };
 
   setCurrentDataSet(setName) {
@@ -23,6 +26,12 @@ class SetScreen extends Component {
   }
 
   startNewDataSet() {
+    if (this.props.set.set.some(set => set.name === this.state.text)) {
+      this.setState({ errorText: 'Cannot create sets with duplicate names' });
+      return;
+    }
+
+    Keyboard.dismiss();
     this.props.createNewSet(this.state.text);
     this.setState({ text: '' });
   }
@@ -35,7 +44,7 @@ class SetScreen extends Component {
     const { text } = this.state;
 
     return (
-      <View style={styles.outerViewStyle}>
+      <KeyboardAvoidingView behavior="padding" style={styles.outerViewStyle}>
         <Header hideLeft hideRight title="Your Datasets" />
         <View style={styles.innerViewStyle}>
           {this.props.set.set.length > 0 ? (
@@ -43,7 +52,7 @@ class SetScreen extends Component {
               data={this.props.set.set}
               keyExtractor={(item, index) => `list-item-${index}`}
               renderItem={({ item }) => (
-                <DataSetItem
+                <SetItem
                   title={item.name}
                   navigator={this.props.navigation}
                   switchToDataSet={() => this.setCurrentDataSet(item.name)}
@@ -62,22 +71,27 @@ class SetScreen extends Component {
             </View>
           )}
         </View>
-        <View style={styles.bottomViewStyle}>
-          <TextInput
-            style={styles.textInputStyle}
-            placeholder="Name your dataset"
-            onChangeText={input => this.setState({ text: input })}
-            value={text}
-          />
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            onPress={() => this.startNewDataSet()}
-            disabled={!text}
-          >
-            <Text>Start New Data Set</Text>
-          </TouchableOpacity>
+        <View>
+          <Text style={styles.errorTextStyle}>{this.state.errorText}</Text>
+          <View style={styles.bottomViewStyle}>
+            <TextInput
+              style={styles.textInputStyle}
+              placeholder="Name your dataset"
+              onChangeText={input =>
+                this.setState({ text: input, errorText: '' })
+              }
+              value={text}
+            />
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={() => this.startNewDataSet()}
+              disabled={!text}
+            >
+              <Text>Start New Data Set</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -93,6 +107,11 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     textAlign: 'center',
+  },
+  errorTextStyle: {
+    textAlign: 'center',
+    color: colors.errorText,
+    marginBottom: 20,
   },
   buttonStyle: {
     height: 30,

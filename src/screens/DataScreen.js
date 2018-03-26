@@ -10,9 +10,12 @@ import {
   FlatList,
   Alert,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
 } from 'react-native';
 import Header from '../components/Header';
-import { logDataPoint } from './../actions';
+import DataItem from '../components/DataItem';
+import { logDataPoint, editDataPoint, deleteDataPoint } from './../actions';
 import { colors } from '../constants/colors';
 
 class DataScreen extends Component {
@@ -34,12 +37,25 @@ class DataScreen extends Component {
   }
 
   addDataPoint() {
+    Keyboard.dismiss();
     this.props.logDataPoint({
       set: this.props.set.currentSet,
       dataPoint: this.state.text,
       timeStamp: new moment(),
     });
     this.setState({ text: '' });
+  }
+
+  editCurrentDataPoint(newItem) {
+    console.log('editCurrentDataPoint');
+    console.log(this.props);
+    console.log(newItem);
+    console.log(this.state);
+    this.props.editDataPoint(newItem);
+  }
+
+  deleteDataPoint(timeStamp) {
+    this.props.deleteDataPoint(timeStamp);
   }
 
   exportData() {
@@ -67,7 +83,7 @@ class DataScreen extends Component {
     const { text, data } = this.state;
 
     return (
-      <View style={styles.viewStyle}>
+      <KeyboardAvoidingView behavior="padding" style={styles.viewStyle}>
         <Header
           title={this.props.set.currentSet}
           onLeft={() => this.props.navigation.navigate('sets')}
@@ -79,9 +95,11 @@ class DataScreen extends Component {
               data={data}
               keyExtractor={(item, index) => `list-item-${index}`}
               renderItem={({ item }) => (
-                <Text>
-                  {moment(item.timeStamp).format('M/DD/YY')} - {item.dataPoint}
-                </Text>
+                <DataItem
+                  deleteDataPoint={() => this.deleteDataPoint(item.timeStamp)}
+                  editDataPoint={this.editCurrentDataPoint.bind(this)}
+                  item={item}
+                />
               )}
             />
           ) : (
@@ -104,7 +122,7 @@ class DataScreen extends Component {
             <Text>Log New Data Point</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -145,4 +163,6 @@ const mapStateToProps = ({ data, set }) => ({
 
 export default connect(mapStateToProps, {
   logDataPoint,
+  editDataPoint,
+  deleteDataPoint,
 })(DataScreen);
