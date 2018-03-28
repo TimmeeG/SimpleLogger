@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
+  Platform,
 } from 'react-native';
 import Header from '../components/Header';
 import DataItem from '../components/DataItem';
@@ -47,10 +48,6 @@ class DataScreen extends Component {
   }
 
   editCurrentDataPoint(newItem) {
-    console.log('editCurrentDataPoint');
-    console.log(this.props);
-    console.log(newItem);
-    console.log(this.state);
     this.props.editDataPoint(newItem);
   }
 
@@ -92,6 +89,7 @@ class DataScreen extends Component {
         <View style={styles.viewStyle}>
           {data ? (
             <FlatList
+              keyboardShouldPersistTaps="always"
               data={data}
               keyExtractor={(item, index) => `list-item-${index}`}
               renderItem={({ item }) => (
@@ -109,10 +107,12 @@ class DataScreen extends Component {
         <View style={styles.bottomViewStyle}>
           <TextInput
             style={styles.textInputStyle}
+            underlineColorAndroid="transparent"
             keyboardType="numeric"
             placeholder="Enter value here"
             onChangeText={input => this.setState({ text: input })}
             value={text}
+            autoCorrect={false}
           />
           <TouchableOpacity
             style={styles.buttonStyle}
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     marginBottom: 15,
+    marginTop: 10,
   },
   textInputStyle: {
     width: '50%',
@@ -153,6 +154,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: colors.inputBorder,
     height: 30,
+    paddingBottom: 0,
   },
 });
 

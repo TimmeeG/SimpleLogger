@@ -25,6 +25,11 @@ class DataItem extends Component {
     });
   }
 
+  deleteItem() {
+    this.setState({ showButtons: false });
+    this.props.deleteDataPoint();
+  }
+
   submitEditItem() {
     this.setState({ editing: false, showButtons: true });
 
@@ -43,6 +48,9 @@ class DataItem extends Component {
         {this.state.editing ? (
           <TextInput
             keyboard="numeric"
+            style={styles.androidPaddingStyle}
+            underlineColorAndroid="transparent"
+            autoCorrect={false}
             value={this.state.editValue}
             onChangeText={input => this.setState({ editValue: input })}
           />
@@ -65,7 +73,7 @@ class DataItem extends Component {
                 <Icon name="edit" size={20} color={colors.editIcon} />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.deleteDataPoint()}>
+            <TouchableOpacity onPress={() => this.deleteItem()}>
               <View style={styles.iconStyle}>
                 <Icon name="trash" size={20} color={colors.deleteIcon} />
               </View>
@@ -113,6 +121,9 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     lineHeight: 30,
+  },
+  androidPaddingStyle: {
+    paddingBottom: 0,
   },
 });
 

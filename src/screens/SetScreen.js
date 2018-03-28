@@ -76,6 +76,8 @@ class SetScreen extends Component {
           <View style={styles.bottomViewStyle}>
             <TextInput
               style={styles.textInputStyle}
+              underlineColorAndroid="transparent"
+              autoCorrect={false}
               placeholder="Name your dataset"
               onChangeText={input =>
                 this.setState({ text: input, errorText: '' })
@@ -135,6 +137,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: colors.inputBorder,
     height: 30,
+    paddingBottom: 0,
   },
 });
 

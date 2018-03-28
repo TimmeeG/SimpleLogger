@@ -45,6 +45,7 @@ export default class App extends Component {
               },
               animationEnabled: true,
               swipeEnabled: true,
+              tabBarPosition: 'bottom',
             },
           ),
         },

@@ -6,8 +6,11 @@ import {
   View,
   TouchableOpacity,
   Button,
+  Dimensions,
 } from 'react-native';
 import { colors } from './../constants/colors';
+
+const WIDTH = Dimensions.get('window').width;
 
 class SetItem extends Component {
   state = {
@@ -43,7 +46,7 @@ class SetItem extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.viewStyle}>
         <Button
           title={this.props.title}
           onPress={() =>
@@ -72,9 +75,11 @@ class SetItem extends Component {
 }
 
 const styles = StyleSheet.create({
+  viewStyle: {
+    width: WIDTH,
+  },
   buttonsViewStyle: {
     flex: 1,
-    width: 300,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
